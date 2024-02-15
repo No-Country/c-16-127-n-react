@@ -1,3 +1,6 @@
 import { Express } from "express";
 
-console.log('hello!');
+// arhivo base del proyecto. Aca
+// se encuentra toda la config del proyecto
+// como router, config de auths , etc
+
