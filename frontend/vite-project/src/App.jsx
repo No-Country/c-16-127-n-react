@@ -12,7 +12,7 @@ function App() {
   return (
     <>
       <Login/>
-      <h1 className="text-red-500">probando page</h1>
+      <h1 className="text-red-500">probando page sajsaj</h1>
       <Footer/>
     </>
   )   
