@@ -3,20 +3,18 @@
 // import viteLogo from '/vite.svg'
 // import './App.css'
 
-import Footer from "../components/Footer"
-import Login from "../components/Login"
+import AppRouter from "../router/AppRouter"
+
+// import Footer from "../components/Footer"
+// import Login from "../components/Login"
 
 function App() {
   // const [count, setCount] = useState(0)
 
   return (
-    <>
-      <Login/>
-      <h1 className="text-red-500">probando page sajsaj</h1>
-      <Footer/>
-    </>
+    <AppRouter/>
   )   
   
 }
 
-export default App
+export default App;
