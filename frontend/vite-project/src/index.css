@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background-color: white;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.social-media-row {
+  display: flex;
+  margin-top: 12px;
+  width: 100%;
+  justify-content: center;
+  gap: 2rem;
+}
