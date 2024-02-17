@@ -11,6 +11,10 @@
     "tailwind": "npx tailwindcss -i ./src/index.css -o ./dist/output.css --watch"
   },
   "dependencies": {
+    "bootstrap-icons": "^1.11.3",
+    "js-tokens": "^9.0.0",
+    "loose-envify": "^1.4.0",
+    "lucide-react": "^0.331.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.1"
