@@ -1,5 +1,12 @@
+import Hero from "../components/Hero";
+import FeaturesRow from "../components/FeaturesRow";
 const Home = () => {
-  return <div>Welcome to ProjectAhead</div>;
+  return (
+    <>
+      <Hero />
+      <FeaturesRow />
+    </>
+  );
 };
 
 export default Home;

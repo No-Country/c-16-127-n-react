@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
-    <nav className="flex items-center justify-between bg-gray-100 py-4 px-6 ">
+    <nav className="flex items-center justify-between bg-gray-100 py-4 px-6 border-black border-b ">
       <div className="flex flex-row items-center">
-        <img src="../../public/logo.png" alt="logo" className="w-14" />
+        <img src="logo.png" alt="logo" className="w-14" />
         <Link
           to={"/"}
           className="font-bold text-2xl m-2 hover:text-[#50586D] ease-in duration-100"
