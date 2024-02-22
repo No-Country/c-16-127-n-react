@@ -6,7 +6,7 @@ const Navbar = () => {
         <img src="logo.png" alt="logo" className="w-14" />
         <Link
           to={"/"}
-          className="font-bold text-2xl m-2 hover:text-[#50586D] ease-in duration-100"
+          className="font-bold text-2xl m-2 hover:text-red-700 ease-in duration-100"
         >
           Project Ahead
         </Link>
