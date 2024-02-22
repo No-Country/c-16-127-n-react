@@ -1,10 +1,10 @@
-import { express } from 'express';
-import { path } from 'path';
-import { session } from 'express-session';
-import { mongoose } from 'mongoose';
-import { dotenv } from 'dotenv';
-import { cors } from 'cors';
-import { morgan } from 'morgan';
+const express = require('express');
+const path = require('path');
+const session = require('express-session');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const cors = require('cors');
+const morgan = require('morgan');
 
 dotenv.config();
 
@@ -12,7 +12,7 @@ mongoose.set('strictQuery', false);
 
 const { mongoUrl } = process.env;
 
-const database = 'postBoard';
+const database = 'SaaS';
 
 const mongoDb = `${mongoUrl + database}?retryWrites=true&w=majority`;
 
@@ -49,6 +49,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan('dev'));
+
+const userRouter = require('./routes/user.router');
+
+app.use('/', userRouter);
+
+app.use('/', (req, res) => {
+  res.render('index');
+});
+
+app.listen(5000, () => console.log('app listening on port 5000!'));
+
+module.exports = { app };
 
 // arhivo base del proyecto. Aca
 // se encuentra toda la config del proyecto
