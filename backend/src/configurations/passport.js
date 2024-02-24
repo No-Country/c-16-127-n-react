@@ -14,14 +14,14 @@ dotenv.config();
 const { jwtTokenSecret } = process.env;
 
 passport.use(
-  new LocalStrategy(async (email, password, done) => {
+  new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
     try {
-      console.log('Nombre de usuario recibido:', email);
+      console.log('Correo recibido:', email);
       console.log('Contraseña recibida:', password);
 
       const user = await User.findOne({ email });
       if (!user) {
-        return done(null, false, { message: 'Incorrect username', user });
+        return done(null, false, { message: 'Email not found', user });
       }
       const match = await bcrypt.compare(password, user.password);
       if (!match) {

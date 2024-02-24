@@ -41,7 +41,8 @@ const UserSchema = new Schema({
       message: (props) => `${props.value} no es un correo electrónico válido`,
     },
   },
-  projets: [{ type: Schema.Types.ObjectId, ref: 'Proyect' }],
+  projects: [{ type: Schema.Types.ObjectId, ref: 'Proyect' }],
+  tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],
 });
 
 module.exports = mongoose.model('User', UserSchema);

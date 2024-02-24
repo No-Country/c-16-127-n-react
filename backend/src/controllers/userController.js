@@ -16,15 +16,15 @@ exports.userList = asyncHandler(async (req, res, next) => {
 });
 
 exports.userCreate = asyncHandler(async (req, res) => {
-  const { email, username, password } = req.body.formData;
+  const { email, username, password } = req.body;
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const checkUser = await User.findOne({ username });
+    const checkUser = await User.findOne({ email });
 
     if (checkUser) {
-      return res.status(400).send({ error: 'User Exist' });
+      return res.status(400).send({ error: 'Email already occupied' });
     }
     const user = new User({
       email,
@@ -56,6 +56,7 @@ exports.userDelete = asyncHandler(async (req, res, next) => {
 
 exports.userLogin = asyncHandler(async (req, res, next) => {
   passport.authenticate('local', async (err, user) => {
+    console.log(user);
     if (err) {
       return next(err);
     }
