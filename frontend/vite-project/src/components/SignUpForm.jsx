@@ -1,14 +1,25 @@
 import { useEffect, useRef } from "react";
-
+import useHandleSignUpInput from "../hooks/useHandleSignUpInput";
 const SignUpForm = () => {
+  const {
+    handleSubmit,
+    handleChange,
+    errors,
+    data,
+    isRegistered,
+    handleFocus,
+  } = useHandleSignUpInput();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [isRegistered]);
   return (
     <>
-      <h1 className="text-3xl font-bold mb-4 text-center">Crear cuenta</h1>
-      <form className="space-y-4 w-80 p-5">
+      <form
+        className="space-y-4 flex flex-col justify-center h-full p-5 "
+        onSubmit={handleSubmit}
+      >
+        <h1 className="text-3xl font-bold mb-4 text-center">Crear cuenta</h1>
         <div>
           <label
             htmlFor="username"
@@ -21,9 +32,14 @@ const SignUpForm = () => {
             id="username"
             name="username"
             className="w-full border border-gray-300 p-2 rounded-lg"
-            placeholder="Enter your username"
+            placeholder="Ingresa nombre de usuario"
             ref={inputRef}
+            onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
+            value={data.username || ""}
           />
+          {errors.username && <h2>{errors.username}</h2>}
         </div>
         <div>
           <label htmlFor="email" className="block text-gray-800 font-bold mb-2">
@@ -34,8 +50,13 @@ const SignUpForm = () => {
             id="email"
             name="email"
             className="w-full border border-gray-300 p-2 rounded-lg"
-            placeholder="Enter your email address"
+            placeholder="Ingresa email"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
+            value={data.email || ""}
           />
+          {errors.email && <h2>{errors.email}</h2>}
         </div>
         <div>
           <label
@@ -49,8 +70,14 @@ const SignUpForm = () => {
             id="password"
             name="password"
             className="w-full border border-gray-300 p-2 rounded-lg"
-            placeholder="Enter your password"
+            placeholder="Ingresa contraseña"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
+            value={data.password || ""}
+            required
           />
+          {errors.password && <h2>{errors.password}</h2>}
         </div>
         <div>
           <label
@@ -64,8 +91,14 @@ const SignUpForm = () => {
             id="confirmPassword"
             name="confirmPassword"
             className="w-full border border-gray-300 p-2 rounded-lg"
-            placeholder="Confirm your password"
+            placeholder="Confirmar contraseña"
+            onChange={handleChange}
+            onFocus={handleFocus}
+            value={data.confirmPassword || ""}
+            autoComplete="off"
+            required
           />
+          {errors.confirmPassword && <h2>{errors.confirmPassword}</h2>}
         </div>
         <div>
           <button

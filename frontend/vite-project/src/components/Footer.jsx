@@ -3,7 +3,7 @@ const Footer = () => {
     <footer className="bg-gray-100 border-black border-t">
       <div className="mx-auto max-w-5xl px-4 py-2 sm:px-6 lg:px-8">
         <div className="flex justify-center text-teal-600">
-          <img src="../../public/logo.png" alt="logo" className="w-24" />
+          <img src="logo.png" alt="logo" className="w-24" />
         </div>
         <ul className="mt-8 flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12">
           <li>

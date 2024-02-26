@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { firstLetterToUpperCase } from "../utils/utils";
-const LoginInput = ({ title, inputType }) => {
+const LoginInput = ({ title, inputType, value, onchange }) => {
   return (
     <div className="py-4">
       <span className="text-md mb-6">{firstLetterToUpperCase(title)}</span>
@@ -11,6 +11,9 @@ const LoginInput = ({ title, inputType }) => {
                 placeholder:text-gray-500"
         name={title}
         id={title}
+        value={value}
+        onChange={onchange}
+        required
       />
     </div>
   );
@@ -19,6 +22,7 @@ const LoginInput = ({ title, inputType }) => {
 LoginInput.propTypes = {
   title: PropTypes.string.isRequired,
   inputType: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };
 
 export default LoginInput;
