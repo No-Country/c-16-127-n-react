@@ -1,8 +1,7 @@
-
 const DashboardHomePage = () => {
   return (
-    <div>DashboardHomePage</div>
-  )
-}
+ <h1>Homepage</h1>
+  );
+};
 
-export default DashboardHomePage
+export default DashboardHomePage;

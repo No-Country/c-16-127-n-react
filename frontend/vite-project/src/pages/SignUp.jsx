@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
 import SignUpForm from "../components/SignUpForm";
 import { useEffect, useRef } from "react";
 const SignUp = () => {
   const bottomRef = useRef(null);
-  useEffect(() => {
+  useEffect(() => { 
     bottomRef.current?.scrollIntoView({ behaviour: "smooth", block: "end" });
   }, []);
   return (
@@ -12,6 +13,15 @@ const SignUp = () => {
           <SignUpForm />
         </div>
       </div>
+      <Link
+        className="fixed top-4 left-4 bg-black text-white
+         rounded-lg p-2 mb-6 hover:bg-white
+         hover:text-black hover:border hover:border-gray-300
+         transition-all duration-300 4 "
+        to={"/"}
+      >
+        Inicio
+      </Link>
       <div ref={bottomRef} className="bottom"></div>
     </>
   );

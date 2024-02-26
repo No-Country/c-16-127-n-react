@@ -13,6 +13,12 @@ const Navbar = () => {
       </div>
       <div>
         <Link
+          className="m-2 text-xl hover:text-2xl ease-in duration-200 hover:font-semibold"
+          to={"/dashboard"}
+        >
+          Usuario
+        </Link>
+        <Link
           to={"/login"}
           className="m-2 text-xl hover:text-2xl ease-in duration-200 hover:font-semibold"
         >
