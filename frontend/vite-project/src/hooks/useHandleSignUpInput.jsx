@@ -13,16 +13,24 @@ const useHandleSignUpInput = () => {
     password: "",
     confirmPassword: "",
   });
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [isInputFieldFocused, setIsInputFieldFocused] = useState({
+    username: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
   const handleSubmit = (e) => {
     e.preventDefault();
     if (
-      Object.keys(errors).length !== 0 &&
+      Object.values(errors).some((e) => e !== "") ||
       Object.values(data).some((v) => v === "")
     ) {
       alert("Completa los campos correctamente");
       return;
     } else {
       alert("Registrado");
+      setIsRegistered(!isRegistered);
       console.log("info", data);
       setData({});
     }
@@ -36,8 +44,12 @@ const useHandleSignUpInput = () => {
     console.log("DATA ARRAY:", Object.values(data));
     console.log(
       "CONDITION",
-      Object.keys(errors).length !== 0 &&
+      Object.values(errors).some((e) => e === "") ||
         Object.values(data).some((v) => v === "")
+    );
+    console.log("FOCUS", isInputFieldFocused);
+    console.log(
+      Object.values(isInputFieldFocused).filter((v) => v === true).length > 1
     );
   };
 
@@ -49,13 +61,53 @@ const useHandleSignUpInput = () => {
     setData({ ...data, [name]: value });
   };
 
+  const handleFocus = (e) => {
+    let name = e.target.name;
+    switch (name) {
+      case "username":
+        setIsInputFieldFocused({
+          ...isInputFieldFocused,
+          [name]: true,
+        });
+
+        break;
+      case "password":
+        setIsInputFieldFocused({
+          ...isInputFieldFocused,
+          [name]: true,
+        });
+        break;
+      case "email":
+        setIsInputFieldFocused({
+          ...isInputFieldFocused,
+          [name]: true,
+        });
+        break;
+      case "confirmPassword":
+        setIsInputFieldFocused({
+          ...isInputFieldFocused,
+          [name]: true,
+        });
+        break;
+    }
+  };
+
+  /*   const handleBlur = (e) => {
+    let name = e.target.name;
+    if (Object.values(isInputFieldFocused).filter((v) => v === true).length > 1)
+      setIsInputFieldFocused({
+        ...isInputFieldFocused,
+        [name]: false,
+      });
+  }; */
   const validateInput = (name, value) => {
     switch (name) {
       case "username":
-        if (value.length <= 5) {
+        if (value.length <= 5 && value.length < 11) {
           setErrors({
             ...errors,
-            username: "El nombre de usuario debe ser de al menos 5 carácteres",
+            username:
+              "El nombre de usuario debe ser de al menos 5 carácteres y no más de 10",
           });
         } else {
           setErrors({ ...errors, username: "" });
@@ -102,7 +154,15 @@ const useHandleSignUpInput = () => {
     }
   };
 
-  return { handleSubmit, handleChange, errors, showErrorsAndData, data };
+  return {
+    handleSubmit,
+    handleChange,
+    errors,
+    showErrorsAndData,
+    data,
+    isRegistered,
+    handleFocus,
+  };
 };
 
 export default useHandleSignUpInput;

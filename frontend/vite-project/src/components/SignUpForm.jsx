@@ -1,12 +1,18 @@
 import { useEffect, useRef } from "react";
 import useHandleSignUpInput from "../hooks/useHandleSignUpInput";
 const SignUpForm = () => {
-  const { handleSubmit, handleChange, errors, showErrorsAndData, data } =
-    useHandleSignUpInput();
+  const {
+    handleSubmit,
+    handleChange,
+    errors,
+    data,
+    isRegistered,
+    handleFocus,
+  } = useHandleSignUpInput();
   const inputRef = useRef(null);
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
+  }, [isRegistered]);
   return (
     <>
       <form
@@ -15,7 +21,10 @@ const SignUpForm = () => {
       >
         <h1 className="text-3xl font-bold mb-4 text-center">Crear cuenta</h1>
         <div>
-          <label htmlFor="email" className="block text-gray-800 font-bold mb-2">
+          <label
+            htmlFor="username"
+            className="block text-gray-800 font-bold mb-2"
+          >
             Nombre de usuario
           </label>
           <input
@@ -26,6 +35,8 @@ const SignUpForm = () => {
             placeholder="Ingresa nombre de usuario"
             ref={inputRef}
             onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
             value={data.username || ""}
           />
           {errors.username && <h2>{errors.username}</h2>}
@@ -41,6 +52,8 @@ const SignUpForm = () => {
             className="w-full border border-gray-300 p-2 rounded-lg"
             placeholder="Ingresa email"
             onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
             value={data.email || ""}
           />
           {errors.email && <h2>{errors.email}</h2>}
@@ -59,7 +72,10 @@ const SignUpForm = () => {
             className="w-full border border-gray-300 p-2 rounded-lg"
             placeholder="Ingresa contraseña"
             onChange={handleChange}
+            onFocus={handleFocus}
+            autoComplete="off"
             value={data.password || ""}
+            required
           />
           {errors.password && <h2>{errors.password}</h2>}
         </div>
@@ -77,7 +93,10 @@ const SignUpForm = () => {
             className="w-full border border-gray-300 p-2 rounded-lg"
             placeholder="Confirmar contraseña"
             onChange={handleChange}
+            onFocus={handleFocus}
             value={data.confirmPassword || ""}
+            autoComplete="off"
+            required
           />
           {errors.confirmPassword && <h2>{errors.confirmPassword}</h2>}
         </div>
@@ -93,7 +112,6 @@ const SignUpForm = () => {
           </button>
         </div>
       </form>
-      <button onClick={() => showErrorsAndData()}>Show errorss</button>
     </>
   );
 };
