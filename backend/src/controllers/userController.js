@@ -1,19 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // aca definimos las funciones utilizados por los endpoints para ejecutar las peticiones
 const bcrypt = require('bcryptjs');
-const dotenv = require('dotenv');
 const asyncHandler = require('express-async-handler');
 
 const { passport, generateToken } = require('../configurations/passport');
 
-dotenv.config();
-
 const User = require('../DAO/models/users.model');
-// por ej: filtrarUsuarioById
-
-exports.userList = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: user list: ${req.params.id}`);
-});
 
 exports.userCreate = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;

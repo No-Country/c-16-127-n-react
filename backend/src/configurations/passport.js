@@ -65,6 +65,7 @@ function authenticateToken(req, res, next) {
       return res.status(403).json({ message: 'Token no valido' });
     }
     req.user = user;
+    console.log('req.user', req.user);
     next();
   });
 }

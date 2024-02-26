@@ -50,13 +50,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan('dev'));
 
-const userRouter = require('./routes/user.router');
+const userRouter = require('./routes/routes');
 
 app.use('/', userRouter);
-
-app.use('/', (req, res) => {
-  res.render('index');
-});
 
 app.listen(5000, () => console.log('app listening on port 5000!'));
 
