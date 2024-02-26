@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import LoginInput from "./LoginInput";
 import LoginPhotoModal from "./LoginPhotoModal";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 const LoginContent = () => {
   const { setAuth } = useAuth();
   const [user, setUser] = useState({ email: "", password: "" });
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from.pathname || "/";
+
   const { email, password } = user;
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +18,7 @@ const LoginContent = () => {
       return;
     }
     setAuth({ email, password });
-    navigate(from, { replace: true });
+    navigate("/dashboard", { replace: true });
     setUser({});
 
     console.log("Bienvenido");
