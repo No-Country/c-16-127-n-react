@@ -9,9 +9,9 @@ router.post('/new-use', userController.userCreate);
 
 router.put('/user/:id', userController.userUpdate);
 router.delete('/user/:id', userController.userDelete);
+router.post('/user/new-proyect', proyectController.proyectCreate);
+router.post('/user/delete-proyect', proyectController.proyectDelete);
 
 router.post('/login', userController.userLogin);
-
-router.post('/user/new-proyect', proyectController.proyectCreate);
 
 module.exports = router;
