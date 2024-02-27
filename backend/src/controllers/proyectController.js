@@ -4,11 +4,11 @@ const { updateUser } = require('../configurations/middleware');
 
 const Proyect = require('../DAO/models/project.model');
 const User = require('../DAO/models/users.model');
+const Task = require('../DAO/models/task.model');
 
 exports.proyectCreate = [
   authenticateToken,
   asyncHandler(async (req, res) => {
-    const { username } = req.user.prop;
     const userId = req.user.prop._id;
     const { proyectName } = req.body;
     try {
@@ -22,8 +22,7 @@ exports.proyectCreate = [
       });
       await newProyect.save();
 
-      const updateUserData = updateUser('add', proyect._id, 'projects');
-      await updateUserData(req, res);
+      await updateUser(userId, 'add', newProyect._id, 'projects');
 
       console.log('Proyecto creado con exito, Usuario actualizado');
       return res.status(200).send('Proyecto creado con exito, Usuario actualizado');
@@ -37,7 +36,6 @@ exports.proyectCreate = [
 exports.proyectDelete = [
   authenticateToken,
   asyncHandler(async (req, res) => {
-    const { username } = req.user.prop;
     const userId = req.user.prop._id;
     const { proyectName } = req.body;
     try {
@@ -47,8 +45,7 @@ exports.proyectDelete = [
       }
       await Proyect.deleteOne({ _id: proyect._id });
 
-      const updateUserData = updateUser('remove', proyect._id, 'projects');
-      await updateUserData(req, res);
+      await updateUser(userId, 'remove', proyect._id, 'projects');
 
       return res.status(200).send('Proyecto encontrado y Usuario actualizado');
     } catch (error) {
