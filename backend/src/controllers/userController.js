@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // aca definimos las funciones utilizados por los endpoints para ejecutar las peticiones
-const bcrypt = require('bcryptjs');
-const asyncHandler = require('express-async-handler');
+const bcrypt = require("bcryptjs");
+const asyncHandler = require("express-async-handler");
 
-const { passport, generateToken } = require('../configurations/passport');
+const { passport, generateToken } = require("../configurations/passport");
 
-const User = require('../DAO/models/users.model');
+const User = require("../DAO/models/users.model");
 
 exports.userCreate = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
@@ -16,7 +16,7 @@ exports.userCreate = asyncHandler(async (req, res) => {
     const checkUser = await User.findOne({ email });
 
     if (checkUser) {
-      return res.status(400).send({ error: 'Email already occupied' });
+      return res.status(409).send({ error: "Email already occupied" });
     }
     const user = new User({
       email,
@@ -26,11 +26,11 @@ exports.userCreate = asyncHandler(async (req, res) => {
 
     await user.save();
 
-    console.log('User created successfully');
-    return res.status(201).send('User created successfully');
+    console.log("User created successfully");
+    return res.status(201).send("User created successfully");
   } catch (error) {
-    console.error('Error al crear el usuario:', error);
-    return res.status(500).send('Error al crear el usuario');
+    console.error("Error al crear el usuario:", error);
+    return res.status(500).send("Error al crear el usuario");
   }
 });
 
@@ -47,18 +47,20 @@ exports.userDelete = asyncHandler(async (req, res, next) => {
 });
 
 exports.userLogin = asyncHandler(async (req, res, next) => {
-  passport.authenticate('local', async (err, user) => {
+  passport.authenticate("local", async (err, user) => {
     console.log(user);
     if (err) {
       return next(err);
     }
     if (!user) {
-      return res.status(401).json({ error: 'Auth Error!' });
+      return res.status(401).json({ error: "Auth Error!" });
     }
     try {
       const userToken = generateToken(user);
       const sendUser = user.username;
-      return res.status(200).send({ message: 'Inicio de sesión exitoso', userToken, sendUser });
+      return res
+        .status(200)
+        .send({ message: "Inicio de sesión exitoso", userToken, sendUser });
     } catch (error) {
       return next(error);
     }
