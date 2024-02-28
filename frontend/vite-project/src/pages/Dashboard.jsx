@@ -6,7 +6,10 @@ const Dashboard = () => {
       <aside className="w-72 bg-gray-800 text-white p-4">
         <div className="flex gap-x-2 items-center  justify-center h-20">
           <h1 className="text-2xl font-bold">Project Ahead</h1>
-          <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+          <Link
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+            to={"/"}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -24,7 +27,7 @@ const Dashboard = () => {
                 d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"
               />
             </svg>
-          </button>
+          </Link>
         </div>
         <ul className="flex flex-col">
           <Link

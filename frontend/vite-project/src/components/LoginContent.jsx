@@ -3,6 +3,8 @@ import LoginInput from "./LoginInput";
 import LoginPhotoModal from "./LoginPhotoModal";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import { firstLetterToUpperCase } from "../utils/utils";
 const LoginContent = () => {
   const { setAuth } = useAuth();
   const [user, setUser] = useState({ email: "", password: "" });
@@ -12,16 +14,38 @@ const LoginContent = () => {
   const { email, password } = user;
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(errorMessage);
+
     if (!email || !password) {
       setErrorMessage("You should enter all the credentials");
       return;
     }
-    setAuth({ email, password });
-    navigate("/dashboard", { replace: true });
-    setUser({});
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/login",
+        { email, password },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Accept: "application/json",
+          },
+        }
+      );
 
-    console.log("Bienvenido");
+      console.log(JSON.stringify(response?.data));
+      const accessToken = response?.data?.userToken;
+      setAuth({ email, password, accessToken });
+      console.log("Bienvenido");
+      setUser({});
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      if (!error?.response) {
+        setErrorMessage("Sin respuesta del servidor");
+      } else if (error.response?.status === 400) {
+        setErrorMessage("Sin autorización");
+      } else {
+        setErrorMessage("Fallo en el inicio de sesión");
+      }
+    }
   };
 
   const handleOnChange = (e) => {
@@ -93,6 +117,11 @@ const LoginContent = () => {
        <span>Sign in with Google</span>
        </div>
      </button> */}
+          <div className="flex justify-center">
+            <p className="text-xl font-bold">
+              {firstLetterToUpperCase(errorMessage)}
+            </p>
+          </div>
           <div className="flex justify-center items-center gap-3">
             <span className="text-gray-400">¿No estás registrado?</span>
             <Link className="font-bold" to={"/signup"}>
