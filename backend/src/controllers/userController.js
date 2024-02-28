@@ -6,6 +6,8 @@ const asyncHandler = require("express-async-handler");
 const { passport, generateToken } = require("../configurations/passport");
 
 const User = require("../DAO/models/users.model");
+const Proyect = require("../DAO/models/project.model");
+const Task = require("../DAO/models/task.model");
 
 exports.userCreate = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;

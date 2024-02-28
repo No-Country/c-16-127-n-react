@@ -1,7 +1,6 @@
 const User = require('../DAO/models/users.model');
 
-const updateUser = (action, idToAdd, property) => async (req, res, next) => {
-  const userId = req.user.prop._id;
+const updateUser = async (userId, action, idToAdd, property) => {
   try {
     let updateQuery;
     if (action === 'add') {
@@ -22,9 +21,10 @@ const updateUser = (action, idToAdd, property) => async (req, res, next) => {
       throw new Error('Usuario no encontrado');
     }
 
-    next();
+    return user;
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
+    throw error;
   }
 };
 
