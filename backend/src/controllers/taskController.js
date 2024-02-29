@@ -37,7 +37,7 @@ exports.createTask = [
       await taskToProyect.save();
 
       console.log('Task created and linked successfully');
-      return res.status(200).send('Task created and linked successfully');
+      return res.status(200).send({ message: 'Task created and linked successfully', task: taskToProyect });
     } catch (error) {
       console.error('Error al crear la tarea:', error);
       return res.status(500).send('Error creating the task');
@@ -60,11 +60,36 @@ exports.assignTask = asyncHandler(async (req, res) => {
       { memberAssigned: memberToAssign._id },
       { new: true },
     );
-    await updateUser(memberToAssign._id, 'add', task._id, 'tasks');
+    const userUpdated = await updateUser(memberToAssign._id, 'add', task._id, 'tasks');
 
-    return res.status(200).send('Usuario asignado correctamente');
+    return res.status(200).send({ message: 'Usuario asignado correctamente', user: userUpdated});
   } catch (error) {
     console.error('Error al asignar la tarea:', error);
     return res.status(500).send('Error assigning the task');
+  }
+});
+
+exports.taksStatus = asyncHandler(async (req, res) => {
+  const { taskStatus } = req.body;
+  const { taskId } = req.body;
+  const { proyectId } = req.body;
+
+  const proyect = await Proyect.findOne({ _id: proyectId, tasks: taskId });
+  if (!proyect) {
+    return res.status(400).send('No se entontro la tarea');
+  }
+
+  try {
+    const taskUpdate = await Task.findByIdAndUpdate(
+      { _id: taskId },
+      { $set: { status: taskStatus } },
+      { new: true },
+    );
+
+    console.log('Tarea actualizada', taskUpdate);
+    return res.status(200).send({ message: 'Tarea actualizada', task: taskUpdate });
+  } catch (error) {
+    console.error('Error al actualizar la tarea', error);
+    return res.status(500).send('Error al actualizar la tarea', error);
   }
 });

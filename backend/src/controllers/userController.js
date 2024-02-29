@@ -3,7 +3,7 @@
 const bcrypt = require('bcryptjs');
 const asyncHandler = require('express-async-handler');
 
-const { passport, generateToken } = require('../configurations/passport');
+const { passport, generateToken, authenticateToken } = require('../configurations/passport');
 
 const User = require('../DAO/models/users.model');
 const Proyect = require('../DAO/models/project.model');
@@ -29,16 +29,27 @@ exports.userCreate = asyncHandler(async (req, res) => {
     await user.save();
 
     console.log('User created successfully');
-    return res.status(201).send('User created successfully');
+    return res.status(201).send({ message: 'User created successfully', user });
   } catch (error) {
     console.error('Error al crear el usuario:', error);
     return res.status(500).send('Error al crear el usuario');
   }
 });
 
-exports.userDetail = asyncHandler(async (req, res, next) => {
-  res.send(`NOT IMPLEMENTED: user detail: ${req.params.id}`);
-});
+exports.userDetail = [
+  authenticateToken,
+  asyncHandler(async (req, res, next) => {
+    const userId = req.user.prop._id;
+    try {
+      const [proyects, tasks] = await Promise.all([
+        User.findById(userId).populate('projects').exec(),
+        User.findById(userId).populate('tasks').exec(),
+      ]);
+      return res.status(200).send({ proyect: proyects, task: tasks });
+    } catch (error) {
+      return res.status(400).send('Error enviando la informacion');
+    }
+  })];
 
 exports.userUpdate = asyncHandler(async (req, res, next) => {
   res.send(`NOT IMPLEMENTED: user update: ${req.params.id}`);

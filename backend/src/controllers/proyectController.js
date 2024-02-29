@@ -22,10 +22,10 @@ exports.proyectCreate = [
       });
       await newProyect.save();
 
-      await updateUser(userId, 'add', newProyect._id, 'projects');
+      const userUpdated = await updateUser(userId, 'add', newProyect._id, 'projects');
 
       console.log('Proyecto creado con exito, Usuario actualizado');
-      return res.status(200).send('Proyecto creado con exito, Usuario actualizado');
+      return res.status(200).send({ message: 'Proyecto creado con exito, Usuario actualizado', proyect: newProyect, user: userUpdated });
     } catch (error) {
       console.error('Error al crear el proyecto:', error);
       return res.status(500).send('Error al crear el proyecto');
@@ -45,9 +45,9 @@ exports.proyectDelete = [
       }
       await Proyect.deleteOne({ _id: proyect._id });
 
-      await updateUser(userId, 'remove', proyect._id, 'projects');
+      const userUpdated = await updateUser(userId, 'remove', proyect._id, 'projects');
 
-      return res.status(200).send('Proyecto encontrado y Usuario actualizado');
+      return res.status(200).send({ message: 'Proyecto encontrado y Usuario actualizado', user: userUpdated });
     } catch (error) {
       return res.status(500).send('Error al borrar el proyecto o actualizar el usuario');
     }

@@ -7,12 +7,14 @@ const proyectController = require('../controllers/proyectController');
 const taskController = require('../controllers/taskController');
 
 router.post('/new-user', userController.userCreate);
-
 router.post('/user/new-proyect', proyectController.proyectCreate);
-router.post('/user/delete-proyect', proyectController.proyectDelete);
+router.delete('/user/delete-proyect', proyectController.proyectDelete);
 
 router.post('/user/new-task', taskController.createTask);
-router.post('/user/send-task', taskController.assignTask);
+router.put('/user/send-task', taskController.assignTask);
+router.put('/user/update-task', taskController.taksStatus);
+
+router.get('/user', userController.userDetail);
 
 router.post('/login', userController.userLogin);
 
