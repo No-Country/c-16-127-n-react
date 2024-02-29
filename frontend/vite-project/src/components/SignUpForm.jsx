@@ -8,6 +8,7 @@ const SignUpForm = () => {
     data,
     isRegistered,
     handleFocus,
+    signUpError,
   } = useHandleSignUpInput();
   const inputRef = useRef(null);
   useEffect(() => {
@@ -16,7 +17,7 @@ const SignUpForm = () => {
   return (
     <>
       <form
-        className="space-y-4 flex flex-col justify-center h-full p-5 "
+        className="space-y-4 flex flex-col justify-center  p-5 "
         onSubmit={handleSubmit}
       >
         <h1 className="text-3xl font-bold mb-4 text-center">Crear cuenta</h1>
@@ -112,6 +113,15 @@ const SignUpForm = () => {
           </button>
         </div>
       </form>
+      <div className="flex justify-center">
+        {signUpError ? (
+          <p className="text-center text-2xl">{signUpError}</p>
+        ) : isRegistered ? (
+          <p>Registrado</p>
+        ) : (
+          ""
+        )}
+      </div>
     </>
   );
 };

@@ -62,7 +62,7 @@ exports.assignTask = asyncHandler(async (req, res) => {
     );
     const userUpdated = await updateUser(memberToAssign._id, 'add', task._id, 'tasks');
 
-    return res.status(200).send({ message: 'Usuario asignado correctamente', user: userUpdated});
+    return res.status(200).send({ message: 'Usuario asignado correctamente', user: userUpdated });
   } catch (error) {
     console.error('Error al asignar la tarea:', error);
     return res.status(500).send('Error assigning the task');

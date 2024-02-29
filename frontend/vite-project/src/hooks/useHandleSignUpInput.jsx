@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import axios from "axios";
 const useHandleSignUpInput = () => {
   const [data, setData] = useState({
     username: "",
@@ -7,12 +7,14 @@ const useHandleSignUpInput = () => {
     password: "",
     confirmPassword: "",
   });
+  const { email, username, password } = data;
   const [errors, setErrors] = useState({
     username: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+  const [signUpError, setSignUpError] = useState("");
   const [isRegistered, setIsRegistered] = useState(false);
   const [isInputFieldFocused, setIsInputFieldFocused] = useState({
     username: false,
@@ -20,7 +22,7 @@ const useHandleSignUpInput = () => {
     password: false,
     confirmPassword: false,
   });
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (
       Object.values(errors).some((e) => e !== "") ||
@@ -28,11 +30,35 @@ const useHandleSignUpInput = () => {
     ) {
       alert("Completa los campos correctamente");
       return;
-    } else {
-      alert("Registrado");
+    }
+    console.log("info", data);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/new-use",
+        {
+          email,
+          username,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+        }
+      );
       setIsRegistered(!isRegistered);
-      console.log("info", data);
+      console.log(response.data);
+      console.log(JSON.stringify(response));
       setData({});
+    } catch (err) {
+      if (!err?.response) setSignUpError("Sin respuesta del servidor");
+      else if (err.response?.status === 409)
+        setSignUpError("Usuario ya existe", err);
+      else {
+        setSignUpError("Error al registrar");
+      }
     }
   };
 
@@ -162,6 +188,7 @@ const useHandleSignUpInput = () => {
     data,
     isRegistered,
     handleFocus,
+    signUpError,
   };
 };
 

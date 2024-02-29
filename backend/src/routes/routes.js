@@ -17,5 +17,3 @@ router.put('/user/update-task', taskController.taksStatus);
 router.get('/user', userController.userDetail);
 
 router.post('/login', userController.userLogin);
-
-module.exports = router;
