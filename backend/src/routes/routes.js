@@ -13,7 +13,12 @@ router.delete('/user/delete-proyect', proyectController.proyectDelete);
 router.post('/user/new-task', taskController.createTask);
 router.put('/user/send-task', taskController.assignTask);
 router.put('/user/update-task', taskController.taksStatus);
+router.put('/user/send-comment', taskController.sendComment);
+router.delete('/user/delete-comment', taskController.deleteComment);
+router.delete('/user/delete-task', taskController.deleteTask);
 
 router.get('/user', userController.userDetail);
 
 router.post('/login', userController.userLogin);
+
+module.exports = router;

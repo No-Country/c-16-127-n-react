@@ -47,7 +47,7 @@ exports.proyectDelete = [
 
       const userUpdated = await updateUser(userId, 'remove', proyect._id, 'projects');
 
-      return res.status(200).send({ message: 'Proyecto encontrado y Usuario actualizado', user: userUpdated });
+      return res.status(200).send({ message: 'Proyecto borrado y Usuario actualizado', user: userUpdated });
     } catch (error) {
       return res.status(500).send('Error al borrar el proyecto o actualizar el usuario');
     }

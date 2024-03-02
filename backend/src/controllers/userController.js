@@ -38,19 +38,25 @@ exports.userCreate = asyncHandler(async (req, res) => {
 
 exports.userDetail = [
   authenticateToken,
-  asyncHandler(async (req, res, next) => {
+  asyncHandler(async (req, res) => {
     const userId = req.user.prop._id;
     try {
-      const [proyects, tasks] = await Promise.all([
-        User.findById(userId).populate('projects').exec(),
-        User.findById(userId).populate('tasks').exec(),
-      ]);
-      return res.status(200).send({ proyect: proyects, task: tasks });
-    } catch (error) {
-      return res.status(400).send('Error enviando la informacion');
-    }
-  })];
+      const user = await User.findById(userId)
+        .populate('projects')
+        .populate('tasks')
+        .exec();
 
+      if (!user) {
+        return res.status(404).send('Usuario no encontrado');
+      }
+
+      return res.status(200).send({ proyect: user.projects, task: user.tasks });
+    } catch (error) {
+      console.error('Error al enviar la información:', error);
+      return res.status(500).send('Error enviando la información');
+    }
+  }),
+];
 exports.userUpdate = asyncHandler(async (req, res, next) => {
   res.send(`NOT IMPLEMENTED: user update: ${req.params.id}`);
 });

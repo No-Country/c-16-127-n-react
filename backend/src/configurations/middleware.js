@@ -1,12 +1,12 @@
 const User = require('../DAO/models/users.model');
 
-const updateUser = async (userId, action, idToAdd, property) => {
+const updateUser = async (userId, action, idToUpdate, property) => {
   try {
     let updateQuery;
     if (action === 'add') {
-      updateQuery = { $push: { [property]: idToAdd } };
+      updateQuery = { $push: { [property]: idToUpdate } };
     } else if (action === 'remove') {
-      updateQuery = { $pull: { [property]: idToAdd } };
+      updateQuery = { $pull: { [property]: idToUpdate } };
     } else {
       throw new Error('Acción no válida');
     }

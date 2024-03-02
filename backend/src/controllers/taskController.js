@@ -10,9 +10,7 @@ exports.createTask = [
   authenticateToken,
   asyncHandler(async (req, res) => {
     const userId = req.user.prop._id;
-    const { proyectName } = req.body;
-    const { taskTitle } = req.body;
-    const { taskDescription } = req.body;
+    const { proyectName, taskTitle, taskDescription } = req.body;
 
     try {
       const proyect = await Proyect.findOne({ name: proyectName, TeamLeader: userId });
@@ -46,9 +44,7 @@ exports.createTask = [
 ];
 
 exports.assignTask = asyncHandler(async (req, res) => {
-  const { proyectId } = req.body;
-  const { taskTitle } = req.body;
-  const { memberEmail } = req.body;
+  const { proyectId, taskTitle, memberEmail } = req.body;
 
   const memberToAssign = await User.findOne({ email: memberEmail });
   if (!memberToAssign) {
@@ -70,21 +66,18 @@ exports.assignTask = asyncHandler(async (req, res) => {
 });
 
 exports.taksStatus = asyncHandler(async (req, res) => {
-  const { taskStatus } = req.body;
-  const { taskId } = req.body;
-  const { proyectId } = req.body;
-
-  const proyect = await Proyect.findOne({ _id: proyectId, tasks: taskId });
-  if (!proyect) {
-    return res.status(400).send('No se entontro la tarea');
-  }
+  const { taskStatus, taskId } = req.body;
 
   try {
     const taskUpdate = await Task.findByIdAndUpdate(
-      { _id: taskId },
+      taskId,
       { $set: { status: taskStatus } },
       { new: true },
     );
+
+    if (!taskUpdate) {
+      return res.status(400).send('No se encontró la tarea');
+    }
 
     console.log('Tarea actualizada', taskUpdate);
     return res.status(200).send({ message: 'Tarea actualizada', task: taskUpdate });
@@ -93,3 +86,71 @@ exports.taksStatus = asyncHandler(async (req, res) => {
     return res.status(500).send('Error al actualizar la tarea', error);
   }
 });
+
+exports.sendComment = [
+  authenticateToken,
+  asyncHandler(async (req, res) => {
+    const { reportMessage, taskId } = req.body;
+    const user = req.user.prop;
+    console.log(req.body);
+    try {
+      const taskUpdate = await Task.findByIdAndUpdate(
+        taskId,
+        { $push: { comments: { createdBy: user._id, content: reportMessage } } },
+        { new: true },
+      );
+      console.log(taskUpdate);
+      if (!taskUpdate) {
+        return res.status(400).send('No se encontro la tarea');
+      }
+      return res.status(200).send({ message: 'Comentario enviado exitosamente', taskUpdate });
+    } catch (error) {
+      return res.status(500).send('Error enviando el comentario', error);
+    }
+  }),
+];
+
+exports.deleteComment = [
+  authenticateToken,
+  asyncHandler(async (req, res) => {
+    const user = req.user.prop;
+    const { taskId, commentsId } = req.body;
+    try {
+      const task = await Task.findOneAndUpdate(
+        { _id: taskId },
+        { $pull: { comments: { _id: commentsId, createdBy: user._id } } },
+        { new: true },
+      );
+      if (!task) {
+        return res.status(400).send('El comentario no existe');
+      }
+      return res.status(200).send('El comentario se borro exitosamente');
+    } catch (error) {
+      return res.status(500).send('Error al borrar el comentario', error);
+    }
+  }),
+];
+
+exports.deleteTask = [
+  authenticateToken,
+  asyncHandler(async (req, res) => {
+    const { proyectId, taskId } = req.body;
+    const user = req.user.prop;
+    const proyect = await Proyect.findOneAndUpdate(
+      { _id: proyectId, TeamLeader: user._id },
+      { $pull: { tasks: taskId } },
+      { new: true },
+    );
+    if (!proyect) {
+      return res.status(400).send('No tienes los priviliegos para borrar el task');
+    }
+    try {
+      await Task.deleteOne({ _id: taskId });
+      const userUpdated = await updateUser(user._id, 'remove', taskId, 'tasks');
+
+      return res.status(200).send({ message: 'Tarea borrada exitosamente', task: userUpdated });
+    } catch (error) {
+      return res.status(500).send('Error al borrar la tarea', error);
+    }
+  }),
+];
